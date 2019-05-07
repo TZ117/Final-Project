@@ -5,7 +5,7 @@ Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ80
 
 int delayval = 500; // delay for half a second
 
-
+// HUGE credit to ZOE IN THE HYBRID LAB - ZIFENG AND TONY
 /*
   State change detection (edge detection)
 
