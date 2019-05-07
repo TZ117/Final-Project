@@ -1,4 +1,3 @@
-
 #include <Adafruit_NeoPixel.h>
 #define PIN            7
 #define NUMPIXELS      8
@@ -35,7 +34,7 @@ int delayval = 500; // delay for half a second
 
 // this constant won't change:
 const int  buttonPin = 2;    // the pin that the pushbutton is attached to
-const int buttonPin2= 4;
+const int buttonPin2 = 4;
 const int ledPin = 13;       // the pin that the LED is attached to
 
 // Variables will change:
@@ -47,7 +46,8 @@ int pixelposition = 4; //pixel position
 
 
 int score = 4;
-
+int lowerbound = 0;
+int maxbound = 7;
 void setup() {
   // initialize the button pin as a input:
   pinMode(buttonPin, INPUT);
@@ -56,20 +56,18 @@ void setup() {
   // initialize serial communication:
   Serial.begin(9600);
   pixels.begin(); // This initializes the NeoPixel library.
-  for(int i=0;i<NUMPIXELS;i++){
-  pixels.setPixelColor(i, pixels.Color(0,0,0)); // Moderately bright green color.
+  for (int i = 0; i < NUMPIXELS / 2; i++) {
+    pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // Moderately bright green color.
     pixels.show(); // This sends the updated pixel color to the hardware.
   }
-    pixels.setPixelColor(0, pixels.Color(255,0,0)); // Moderately bright white
-    pixels.setPixelColor(1, pixels.Color(255,0,0)); // Moderately bright white
-    pixels.setPixelColor(2, pixels.Color(255,0,0)); // Moderately bright white
-    pixels.setPixelColor(3, pixels.Color(255,0,0)); // Moderately bright white
-  pixels.setPixelColor(4, pixels.Color(0,0,255)); // Moderately bright white
-  pixels.setPixelColor(5, pixels.Color(0,0,255)); // Moderately bright white
-    pixels.setPixelColor(6, pixels.Color(0,0,255)); // Moderately bright white
-      pixels.setPixelColor(7, pixels.Color(0,0,255)); // Moderately bright white
-  pixels.show();
+  for (int i = 4; i < NUMPIXELS; i++) {
+    pixels.setPixelColor(i, pixels.Color(255, 0, 0)); // Moderately bright green color.
+    pixels.show(); // This sends the updated pixel color to the hardware.
+  }
+
+
 }
+
 void loop() {
   // HANDLE FIRST BUTTON
   // For a set of NeoPixels the first NeoPixel is 0, second is 1.
@@ -77,17 +75,15 @@ void loop() {
   // read the pushbutton input pin:
   buttonState = digitalRead(buttonPin);
 
-  // compare the buttonState to its previous state
+  //compare the buttonState to its previous state
   if (buttonState != lastButtonState) {
     // if the state has changed, increment the counter
     if (buttonState == HIGH) {
       // if the current state is HIGH then the button went from off to on:
       Serial.println("Button1 pressed");
       score = score + 1;//score up
-      pixelposition = score;
-      pixels.setPixelColor(pixelposition, pixels.Color(255,0,0)); // Moderately bright white
-  pixels.show();
-    
+
+
     } else {
       // if the current state is LOW then the button went from on to off:
       Serial.println("off");
@@ -97,21 +93,19 @@ void loop() {
   }
   // save the current state as the last state, for next time through the loop
   lastButtonState = buttonState;
-  
+
 
   // HANDLE SECOND BUTTON
-buttonState2 = digitalRead(buttonPin2);
+  buttonState2 = digitalRead(buttonPin2);
 
-  // compare the buttonState to its previous state
+  //compare the buttonState to its previous state
   if (buttonState2 != lastButtonState2) {
     // if the state has changed, increment the counter
     if (buttonState2 == HIGH) {
       // if the current state is HIGH then the button went from off to on:
       Serial.println("Button2 pressed");
       score = score - 1; //score down
-      pixelposition = score;
-      pixels.setPixelColor(pixelposition, pixels.Color(0,0,255)); // Moderately bright white
-  pixels.show();
+
     } else {
       // if the current state is LOW then the button went from on to off:
       Serial.println("off");
@@ -125,29 +119,25 @@ buttonState2 = digitalRead(buttonPin2);
 
 
   Serial.println(score);
-    //button1 win:
-  if (score <= 0 ){
+  for (int i = 0; i < NUMPIXELS; i++) {
+    if(i<score){
+      pixels.setPixelColor(i, pixels.Color(255, 0, 0)); // Moderately bright green color.
+    }else {
+      pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // Moderately bright green color
+    }
+    pixels.show(); // This sends the updated pixel color to the hardware.
+  }
+ 
+
+  //button1 win:
+  if (score <= 0 ) {
     Serial.print("Player 1 Wins!");
   }
-    //button2 win:
-  if (score >= 7 ){
+  //button2 win:
+  if (score >= 7 ) {
     Serial.print("Player 2 Wins!");
   }
 
 
 
-  /*
-  // turns on the LED every four button pushes by checking the modulo of the
-  // button push counter. the modulo function gives you the remainder of the
-  // division of two numbers:
-  if (buttonPushCounter % 4 == 0) {
-    digitalWrite(ledPin, HIGH);
-  } else {
-    digitalWrite(ledPin, LOW);
-  }
-*/
-  }
-
-If else statement’
-2nd variable updating pixel number
-2 variable
+}
